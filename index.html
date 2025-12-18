@@ -75,27 +75,32 @@
     </div>
 
     <script>
-        const YOUR_GITHUB_URL = window.location.href;
-        const MOVIE_URL = "https://www.ppnix.com/cn/";
-
+        // 替换为你生成的电影网站短链接
+        const MOVIE_SHORT_URL = "https://www.ppnix.com/cn/"; 
         const enterBtn = document.querySelector('.enter-btn');
 
         enterBtn.addEventListener('click', () => {
-            window.location.href = MOVIE_URL;
-            history.replaceState({}, document.title, YOUR_GITHUB_URL);
-            window.addEventListener('popstate', () => {
-                history.replaceState({}, document.title, YOUR_GITHUB_URL);
-            });
+            const windowFeatures = 'toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=800,top=50,left=100';
+            const movieWindow = window.open(MOVIE_SHORT_URL, '_blank', windowFeatures);
+
+            if (movieWindow) {
+                movieWindow.addEventListener('load', () => {
+                    try {
+                        movieWindow.document.addEventListener('contextmenu', e => e.preventDefault());
+                        movieWindow.document.addEventListener('selectstart', e => e.preventDefault());
+                        movieWindow.document.addEventListener('copy', e => e.preventDefault());
+                    } catch (err) {}
+                });
+            }
+
+            enterBtn.textContent = "已打开观影窗口";
+            enterBtn.disabled = true;
+            enterBtn.style.backgroundColor = "#6c757d";
         });
 
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('selectstart', e => e.preventDefault());
         document.addEventListener('copy', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
-                e.preventDefault();
-            }
-        });
     </script>
 </body>
 </html>
