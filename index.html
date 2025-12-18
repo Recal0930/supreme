@@ -12,8 +12,7 @@
             font-family: 'Arial', sans-serif;
         }
         body {
-            /* 已替换为你的背景图URL */
-            background: url('https://s41.ax1x.com/2025/12/19/pZ1d8DU.jpg') center/cover no-repeat fixed;
+            background-color: #1a1a1a; /* 恢复纯色背景 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -79,19 +78,6 @@
             background-color: #0088cc;
             transform: scale(1.02);
         }
-        .exit-btn {
-            background-color: #dc3545;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: auto;
-            padding: 10px 20px;
-            z-index: 9999;
-            display: none;
-        }
-        .exit-btn:hover {
-            background-color: #c82333;
-        }
     </style>
 </head>
 <body>
@@ -104,31 +90,22 @@
 
     <div class="movie-container">
         <iframe id="movieIframe" src="https://www.ppnix.com/cn/"></iframe>
-        <button class="btn exit-btn">退出观影</button>
     </div>
 
     <script>
-        const TARGET_URL = "https://www.ppnix.com/cn/";
+        const TARGET_URL = "https://www.ppnix.com/cn/"; // 更换后的电影网站
 
-        const [verifyContainer, movieContainer, movieIframe, enterBtn, exitBtn] = [
+        const [verifyContainer, movieContainer, movieIframe, enterBtn] = [
             document.querySelector('.verify-container'),
             document.querySelector('.movie-container'),
             document.getElementById('movieIframe'),
-            document.querySelector('.enter-btn'),
-            document.querySelector('.exit-btn')
+            document.querySelector('.enter-btn')
         ];
 
         enterBtn.addEventListener('click', () => {
             verifyContainer.style.display = "none";
             movieContainer.style.display = "block";
             movieIframe.src = TARGET_URL;
-            exitBtn.style.display = "block";
-        });
-
-        exitBtn.addEventListener('click', () => {
-            movieContainer.style.display = "none";
-            verifyContainer.style.display = "block";
-            movieIframe.src = "";
         });
 
         // 防复制
