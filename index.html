@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开启观影之旅（永久版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            /* 已替换为你的背景图URL */
+            background: url('https://s41.ax1x.com/2025/12/19/pZ1d8DU.jpg') center/cover no-repeat fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .verify-container {
+            background-color: rgba(45, 45, 45, 0.95);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #00aaff;
+            position: relative;
+            z-index: 10;
+        }
+        .movie-container {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            position: relative;
+            z-index: 20;
+        }
+        #movieIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .title-suffix {
+            color: #00aaff;
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .main-title {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+        }
+        .expire-tip {
+            color: #ff4444;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #00aaff;
+            color: #ffffff;
+        }
+        .btn:hover {
+            background-color: #0088cc;
+            transform: scale(1.02);
+        }
+        .exit-btn {
+            background-color: #dc3545;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: auto;
+            padding: 10px 20px;
+            z-index: 9999;
+            display: none;
+        }
+        .exit-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="title-suffix">（永久版）</div>
+        <h1 class="main-title">开启观影之旅</h1>
+        <div class="expire-tip">（永久畅享全球影视剧）</div>
+        <button class="btn enter-btn">进入</button>
+    </div>
+
+    <div class="movie-container">
+        <iframe id="movieIframe" src="http://www.0910jzw.com/"></iframe>
+        <button class="btn exit-btn">退出观影</button>
+    </div>
+
+    <script>
+        const TARGET_URL = "http://www.0910jzw.com/";
+
+        const [verifyContainer, movieContainer, movieIframe, enterBtn, exitBtn] = [
+            document.querySelector('.verify-container'),
+            document.querySelector('.movie-container'),
+            document.getElementById('movieIframe'),
+            document.querySelector('.enter-btn'),
+            document.querySelector('.exit-btn')
+        ];
+
+        enterBtn.addEventListener('click', () => {
+            verifyContainer.style.display = "none";
+            movieContainer.style.display = "block";
+            movieIframe.src = TARGET_URL;
+            exitBtn.style.display = "block";
+        });
+
+        exitBtn.addEventListener('click', () => {
+            movieContainer.style.display = "none";
+            verifyContainer.style.display = "block";
+            movieIframe.src = "";
+        });
+
+        // 防复制
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
+        movieIframe.addEventListener('load', () => {
+            try {
+                const iframeDoc = movieIframe.contentDocument || movieIframe.contentWindow.document;
+                iframeDoc.addEventListener('contextmenu', e => e.preventDefault());
+                iframeDoc.addEventListener('selectstart', e => e.preventDefault());
+            } catch (err) {}
+        });
+    </script>
+</body>
+</html>
