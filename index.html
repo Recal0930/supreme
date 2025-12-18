@@ -30,6 +30,20 @@
             width: 100%;
             max-width: 400px;
             border: 2px solid #00aaff;
+            position: relative;
+            z-index: 10;
+        }
+        .movie-container {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            position: relative;
+            z-index: 20;
+        }
+        #movieIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         .title-suffix {
             color: #00aaff;
@@ -74,33 +88,37 @@
         <button class="btn enter-btn">进入</button>
     </div>
 
+    <div class="movie-container">
+        <iframe id="movieIframe" src="https://www.ppnix.com/cn/"></iframe>
+    </div>
+
     <script>
-        // 替换为你生成的电影网站短链接
-        const MOVIE_SHORT_URL = "https://www.ppnix.com/cn/"; 
-        const enterBtn = document.querySelector('.enter-btn');
+        const TARGET_URL = "https://www.ppnix.com/cn/";
+
+        const [verifyContainer, movieContainer, movieIframe, enterBtn] = [
+            document.querySelector('.verify-container'),
+            document.querySelector('.movie-container'),
+            document.getElementById('movieIframe'),
+            document.querySelector('.enter-btn')
+        ];
 
         enterBtn.addEventListener('click', () => {
-            const windowFeatures = 'toolbar=no,location=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=800,top=50,left=100';
-            const movieWindow = window.open(MOVIE_SHORT_URL, '_blank', windowFeatures);
-
-            if (movieWindow) {
-                movieWindow.addEventListener('load', () => {
-                    try {
-                        movieWindow.document.addEventListener('contextmenu', e => e.preventDefault());
-                        movieWindow.document.addEventListener('selectstart', e => e.preventDefault());
-                        movieWindow.document.addEventListener('copy', e => e.preventDefault());
-                    } catch (err) {}
-                });
-            }
-
-            enterBtn.textContent = "已打开观影窗口";
-            enterBtn.disabled = true;
-            enterBtn.style.backgroundColor = "#6c757d";
+            verifyContainer.style.display = "none";
+            movieContainer.style.display = "block";
+            movieIframe.src = TARGET_URL;
         });
 
+        // 防复制
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('selectstart', e => e.preventDefault());
         document.addEventListener('copy', e => e.preventDefault());
+        movieIframe.addEventListener('load', () => {
+            try {
+                const iframeDoc = movieIframe.contentDocument || movieIframe.contentWindow.document;
+                iframeDoc.addEventListener('contextmenu', e => e.preventDefault());
+                iframeDoc.addEventListener('selectstart', e => e.preventDefault());
+            } catch (err) {}
+        });
     </script>
 </body>
 </html>
