@@ -12,7 +12,7 @@
             font-family: 'Arial', sans-serif;
         }
         body {
-            background-color: #1a1a1a; /* 恢复纯色背景 */
+            background-color: #1a1a1a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -44,6 +44,7 @@
             width: 100%;
             height: 100%;
             border: none;
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-navigation";
         }
         .title-suffix {
             color: #00aaff;
@@ -93,7 +94,7 @@
     </div>
 
     <script>
-        const TARGET_URL = "https://www.ppnix.com/cn/"; // 更换后的电影网站
+        const TARGET_URL = "https://www.ppnix.com/cn/";
 
         const [verifyContainer, movieContainer, movieIframe, enterBtn] = [
             document.querySelector('.verify-container'),
@@ -108,17 +109,38 @@
             movieIframe.src = TARGET_URL;
         });
 
-        // 防复制
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('selectstart', e => e.preventDefault());
-        document.addEventListener('copy', e => e.preventDefault());
+        function interceptIframeLinks() {
+            try {
+                const iframeDoc = movieIframe.contentDocument || movieIframe.contentWindow.document;
+                const allLinks = iframeDoc.querySelectorAll('a');
+                
+                allLinks.forEach(link => {
+                    link.removeAttribute('target');
+                    link.setAttribute('target', '_self');
+                    
+                    link.addEventListener('click', e => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.startsWith('javascript:')) {
+                            e.preventDefault();
+                            movieIframe.src = href;
+                        }
+                    });
+                });
+            } catch (err) {}
+        }
+
         movieIframe.addEventListener('load', () => {
+            interceptIframeLinks();
             try {
                 const iframeDoc = movieIframe.contentDocument || movieIframe.contentWindow.document;
                 iframeDoc.addEventListener('contextmenu', e => e.preventDefault());
                 iframeDoc.addEventListener('selectstart', e => e.preventDefault());
             } catch (err) {}
         });
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('copy', e => e.preventDefault());
     </script>
 </body>
 </html>
